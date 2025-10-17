@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>당신의 과금 현황</title>
-  <title>JS Bin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과금요정</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- 🔹 섹션 제목 -->
-    <div class="form-section-title">
-  ✨당신의 과금 요정✨
-</div>
-
+    <div class="container">
+        <header>
+            <h1> 당신의 과금 현황</h1>
+           
+        </header>
+<main>
     <form id="survey-form">
         <!-- 1. 연령대 -->
         <div class="form-group">
@@ -29,7 +30,7 @@
 
         <!-- 2. 일주일에 몇 개의 게임 플레이 -->
         <div class="form-group">
-            <label for="weekly-games">2. 일주일에 몇 개의 게임을 플레이 *</label>
+            <label for="weekly-games">2. 일주일에 몇 개의 게임을 플레이하나요 *</label>
             <select id="weekly-games" name="weekly-games" required>
                 <option value="" disabled selected>게임 개수를 선택하세요</option>
                 <option value="1개">1개</option>
@@ -42,7 +43,7 @@
 
         <!-- 3. 하루 플레이 시간 -->
         <div class="form-group">
-            <label for="daily-hours">3. 하루에 몇 시간 플레이 *</label>
+            <label for="daily-hours">3. 하루에 몇 시간 플레이하나요 *</label>
             <select id="daily-hours" name="daily-hours" required>
                 <option value="" disabled selected>평균 시간을 선택하세요</option>
                 <option value="1시간 미만">1시간 미만</option>
@@ -56,7 +57,7 @@
 
         <!-- 4. 게임 과금 여부 -->
         <div class="form-group">
-            <label for="pay-status">4. 게임 과금 여부 *</label>
+            <label for="pay-status">4. 게임 과금을 하신 적 있으신가요 *</label>
             <select id="pay-status" name="pay-status" required>
                 <option value="" disabled selected>선택하세요</option>
                 <option value="있다">있다</option>
@@ -102,6 +103,17 @@
             </select>
         </div>
 
+        <!-- 제출 버튼 -->
         <button type="submit" class="submit-btn">💝 제출하기</button>
     </form>
-  </body>
+</main>
+
+        <footer>
+            <p>&copy; 2025 나의 따뜻한 하루. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
