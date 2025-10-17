@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
 
 :root {
-    --primary-color: #000000; /* Amber */
-    --secondary-color: #000000; /* Light Pastel Coral */
-    --background-color: #FFFFFF; /* Light Cream */
+    --primary-color: #FFC107; /* Amber */
+    --secondary-color: #FFAB91; /* Light Pastel Coral */
+    --background-color: #FFF8E1; /* Light Cream */
     --card-background: #FFFFFF;
     --text-color: #424242;
     --border-color: #E0E0E0;
@@ -64,7 +64,6 @@ input[type="date"], select, textarea {
     border-radius: 8px;
     font-size: 1rem;
     font-family: 'Noto Sans KR', sans-serif;
-  color: #969592;
 }
 
 textarea {
@@ -91,7 +90,7 @@ textarea {
 
 .mood-selector input[type="radio"]:checked + label {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--card-background);
     border-color: var(--primary-color);
     font-weight: 700;
 }
@@ -110,7 +109,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #f2f2f2; /* Deeper Pastel Coral */
+    background-color: #FF8A65; /* Deeper Pastel Coral */
 }
 
 .chart-container {
@@ -183,7 +182,31 @@ button[type="submit"]:hover {
     color: var(--secondary-color);
 }
 
+/* 게시판 목록 스타일 */
+.records-list-container {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    overflow: hidden; /* 자식 요소의 radius 적용을 위해 */
+}
 
+.records-header, .record-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 120px 100px 80px;  
+    gap: 15px;
+    padding: 15px 20px;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.records-header {
+    font-weight: 700;
+    background-color: #f9f9f9;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.records-header > div:nth-child(3) {
     /* 반응 헤더 */
 }
 
@@ -260,13 +283,18 @@ footer {
         color: var(--secondary-color);
     }
 
-    
-}
+    .record-type::before { content: '종류: '; }
+    .record-content::before { content: '내용: '; }
+    .record-date::before { content: '날짜: '; }
+    .record-mood::before { content: '기분: '; }
 
-.form-section-title {
-  margin-top: 30px;
-  margin-bottom: 20px;
-  font-size: 1.6rem;        /* 🔹 텍스트 크기 키움 */
-  font-weight: 700;
-  text-align: center;       /* 🔹 가운데 정렬 */
-color: #eb26ca
+    .record-content {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: initial;
+    }
+
+    .record-date, .record-mood {
+        text-align: left;
+    }
+}
