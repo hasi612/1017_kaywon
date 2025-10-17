@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/zuwudukagi/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘의 목표</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 50%, #fd79a8 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #32a852, #d8f788);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="20">🤝</text></svg>') no-repeat center;
+            background-size: 60px;
+            opacity: 0.1;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tab.active {
+            color: #fd79a8;
+            border-bottom-color: #fd79a8;
+            background: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2d3436;
+            font-size: 16px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #fd79a8;
+            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.1);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .radio-option {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+        
+        .radio-option label {
+            display: block;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .radio-option input[type="radio"]:checked + label {
+            border-color: #fd79a8;
+            background: #fd79a8;
+            color: white;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #fd79a8, #ff7675);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(253, 121, 168, 0.3);
+        }
+        
+        .weekly-challenge {
+            background: linear-gradient(135deg, #55efc4, #00b894);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .challenge-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .challenge-description {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .guide-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .guide-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .guide-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #636e72;
+        }
+        
+        .examples {
+            display: grid;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .example-item {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 4px solid #fd79a8;
+            font-size: 13px;
+        }
+        
+        .example-good {
+            border-left-color: #00b894;
+        }
+        
+        .example-bad {
+            border-left-color: #e17055;
+        }
+        
+        .inspiring-quote {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .quote-text {
+            font-size: 16px;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .quote-author {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .ranking-section {
+            background: linear-gradient(135deg, #fdcb6e, #e17055);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .ranking-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .ranking-item {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .ranking-icon {
+            font-size: 20px;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤝 오늘의 목표 </h1>
+            <p> 목표를 세우고 실천하세요 </p>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('record')">😊 하루 기록하기</button>
+            <button class="nav-tab" onclick="showTab('guide')">📖 목표 가이드</button>
+            <button class="nav-tab" onclick="showTab('view')">👀 다른사람들의 목표 구경하기</button>
+            <button class="nav-tab" onclick="showTab('stats')">📊 체크 지수</button>
+        </div>
+        
+        <!-- 친절 기록하기 탭 -->
+        <div id="record" class="tab-content active">
+            <div class="weekly-challenge">
+                <div class="challenge-title">💡 이번 주 챌린지</div>
+                <div class="challenge-description"> 짧게라도 운동하기</div>
+            </div>
+            
+            <form name="kindness-tracker" method="POST" data-netlify="true" action="/success">
+                <input type="hidden" name="form-name" value="kindness-tracker">
+                
+                <div class="form-group">
+                    <label>🏷️ 목표 종류 *</label>
+                  <select name="kindness-category" required>
+                        <option value="">어떤 종류의 목표인가요?</option>
+                        <option value="생활 속 친절">🏠 건강 관리 (문 잡아주기, 엘리베이터 기다리기, 길 안내)</option>
+                        <option value="소통의 친절">💬 자기계발 (고마운 인사, 격려, 칭찬, 경청)</option>
+                        <option value="나눔의 친절">🤝 정리/실행 (음식/물건 나누기, 정보 공유, 도움)</option>
+                        <option value="배려의 친절">❤️ 인간관계 ( 책상 정리, 자리 정리, 설거지)</option>
+                        <option value="디지털 친절">💻 물건 구매 (생필품 구매, 재료 구매)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>📝 오늘은 어떤 목표를 실행했나요 *</label>
+                    <textarea name="kindness-description" rows="3" placeholder="예: 버스에서 할머니께 자리를 양보했어요" required></textarea>
+                    <div class="help-text">언제, 어디서, 누구에게, 무엇을 했는지 구체적으로 적어주세요</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>📍 어디서 일어났나요?</label>
+                    <input type="text" name="location" placeholder="예: 학교 앞 버스정류장, 도서관, 카페 등">
+                </div>
+                
+                <div class="form-group">
+                    <label>😊 상대방의 반응은 어땠나요?</label>
+                    <select name="reaction">
+                        <option value="">선택해주세요 (선택사항)</option>
+                        <option value="감사 표현">🙏 감사하다고 말씀해주셨어요</option>
+                        <option value="미소">😊 밝게 미소지어주셨어요</option>
+                        <option value="놀라움">😲 놀라워하셨어요</option>
+                        <option value="당연함">😌 당연하다는 듯 받아주셨어요</option>
+                        <option value="무반응">😐 특별한 반응은 없었어요</option>
+                        <option value="기타">🤔 기타</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>💫 목표를 실행한 후 내 기분은 어땠나요? *</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="my-feeling" value="매우 좋음" id="feeling1" required>
+                            <label for="feeling1">😊 매우 좋음</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="my-feeling" value="좋음" id="feeling2">
+                            <label for="feeling2">🙂 좋음</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="my-feeling" value="보통" id="feeling3">
+                            <label for="feeling3">😐 보통</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="my-feeling" value="아쉬움" id="feeling4">
+                            <label for="feeling4">😕 좀 아쉬웠음</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>⭐ 오늘 하루의 전체적인 따뜻함 점수는? *</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="warmth-score" value="1" id="score1" required>
+                            <label for="score1">1점</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="warmth-score" value="2" id="score2">
+                            <label for="score2">2점</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="warmth-score" value="3" id="score3">
+                            <label for="score3">3점</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="warmth-score" value="4" id="score4">
+                            <label for="score4">4점</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="warmth-score" value="5" id="score5">
+                            <label for="score5">5점</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>🏷️ 닉네임 (선택사항)</label>
+                    <input type="text" name="nickname" placeholder="친절왕, 따뜻한마음 등 (익명도 가능)">
+                </div>
+                
+                <button type="submit" class="submit-btn">💝 오늘의 친절 기록하기</button>
+            </form>
+        </div>
+        
+        <!-- 친절 가이드 탭 -->
+        <div id="guide" class="tab-content">
+            <div class="guide-section">
+                <div class="guide-title">📖 친절 기록 가이드</div>
+                <div class="guide-content">
+                    <p><strong>✅ 좋은 친절 기록 예시:</strong></p>
+                    <div class="examples">
+                        <div class="example-item example-good">"지하철에서 임산부분께 자리를 양보했어요"</div>
+                        <div class="example-item example-good">"과제로 힘들어하는 친구에게 자료를 공유해줬어요"</div>
+                        <div class="example-item example-good">"카페에서 나갈 때 다른 사람 컵도 정리하고 나왔어요"</div>
+                        <div class="example-item example-good">"할머니가 무거운 짐 들고 계셔서 도와드렸어요"</div>
+                    </div>
+                    
+                    <p><strong>❌ 애매한 기록 예시:</strong></p>
+                    <div class="examples">
+                        <div class="example-item example-bad">"친절했어요" (구체적이지 않음)</div>
+                        <div class="example-item example-bad">"좋은 일 했어요" (무엇인지 모호)</div>
+                        <div class="example-item example-bad">"도움을 줬어요" (어떤 도움인지 불분명)</div>
+                    </div>
+                    
+                    <p><strong>💡 기록 팁:</strong> 언제, 어디서, 누구에게, 무엇을 했는지 구체적으로 적어주세요!</p>
+                </div>
+            </div>
+            
+            <div class="guide-section">
+                <div class="guide-title">🎯 친절 아이디어</div>
+                <div class="guide-content">
+                    <p><strong>🏠 생활 속에서:</strong></p>
+                    <p>• 문 잡아주기 • 엘리베이터 기다려주기 • 길 안내해드리기 • 떨어뜨린 물건 주워드리기</p>
+                    
+                    <p><strong>💬 대화에서:</strong></p>
+                    <p>• 진심 어린 "고맙습니다" 인사 • 힘든 친구에게 격려 한마디 • 잘한 일에 칭찬하기 • 이야기 끝까지 들어주기</p>
+                    
+                    <p><strong>🤝 나눔으로:</strong></p>
+                    <p>• 간식 나누어주기 • 유용한 정보 알려주기 • 공부 자료 공유하기 • 필요한 물건 빌려주기</p>
+                    
+                    <p><strong>❤️ 배려로:</strong></p>
+                    <p>• 대중교통에서 자리 양보 • 조용히 해야 할 곳에서 소음 줄이기 • 줄 서기 질서 지키기</p>
+                </div>
+            </div>
+            
+            <div class="ranking-section">
+                <div class="ranking-title">🏆 친절 랭킹 시스템</div>
+                <div class="ranking-item">
+                    <span class="ranking-icon">👑</span>
+                    <div>
+                        <strong>주간 친절왕</strong><br>
+                        <small>가장 많이 친절을 기록한 분</small>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <span class="ranking-icon">💡</span>
+                    <div>
+                        <strong>창의적 친절상</strong><br>
+                        <small>독특하고 창의적인 친절 아이디어</small>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <span class="ranking-icon">🔥</span>
+                    <div>
+                        <strong>꾸준한 친절상</strong><br>
+                        <small>연속으로 친절을 기록한 분</small>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <span class="ranking-icon">💝</span>
+                    <div>
+                        <strong>따뜻함 대상</strong><br>
+                        <small>가장 높은 따뜻함 점수를 기록한 분</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 친절 구경하기 탭 -->
+        <div id="view" class="tab-content">
+            <div class="inspiring-quote">
+                <div class="quote-text">"친절은 전염병보다 빨리 퍼진다"</div>
+                <div class="quote-author">- 익명의 지혜</div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <h3 style="margin-bottom: 15px; color: #2d3436;">💕 실시간 친절 기록들</h3>
+                <p style="color: #636e72; font-size: 14px; margin-bottom: 15px;">
+                    여러분이 제출한 친절 기록들이 실시간으로 업데이트됩니다!
+                </p>
+                
+                <!-- Google Sheets 웹 게시 임베드 -->
+                <div style="border: 1px solid #e9ecef; border-radius: 10px; overflow: hidden;">
+                    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTSMrpnHDJ-rGjEIiOKQHOAAevSmRGjmOoSm57oRQ8b5TGfdhWWkjbqfrxIpeXVuhi5itbnXfodE9uF/pubhtml?gid=811111608&amp;single=true&amp;widget=true&amp;headers=false" width="100%" height="300"></iframe>
+                </div>
+                
+                <p style="color: #999; font-size: 12px; text-align: center; margin-top: 10px;">
+                    📊 Google Sheets로 실시간 연동 • 주 1-2회 업데이트
+                </p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                <h4 style="color: #2d3436; margin-bottom: 10px;">🔍 친절 데이터 활용법</h4>
+                <ul style="color: #636e72; font-size: 14px; line-height: 1.6;">
+                    <li>표에서 직접 검색하여 관심 있는 친절 찾기</li>
+                    <li>친절 종류별로 정렬해서 패턴 발견하기</li>
+                    <li>따뜻함 점수 순으로 정렬해서 가장 따뜻한 순간들 보기</li>
+                    <li>날짜별로 정렬해서 최신 친절 확인하기</li>
+                    <li>다른 사람의 친절에서 영감 받기</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 따뜻함 지수 탭 -->
+        <div id="stats" class="tab-content">
+            <div style="margin-bottom: 20px;">
+                <h3 style="margin-bottom: 15px; color: #2d3436;">📊 실시간 따뜻함 통계</h3>
+                <p style="color: #636e72; font-size: 14px; margin-bottom: 15px;">
+                    수집된 데이터를 바탕으로 자동 생성되는 차트들입니다!
+                </p>
+                
+                <!-- Google Sheets 차트들 임베드 -->
+                <div style="display: grid; gap: 20px;">
+                    <div style="border: 1px solid #e9ecef; border-radius: 10px; padding: 15px; background: white;">
+                        <h4 style="margin-bottom: 10px; color: #2d3436;">친절 종류별 분포</h4>
+                        <iframe seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTSMrpnHDJ-rGjEIiOKQHOAAevSmRGjmOoSm57oRQ8b5TGfdhWWkjbqfrxIpeXVuhi5itbnXfodE9uF/pubchart?oid=917814916&amp;format=interactive" width="100%" height="300"></iframe>
+                    </div>
+                    
+                    <div style="border: 1px solid #e9ecef; border-radius: 10px; padding: 15px; background: white;">
+                        <h4 style="margin-bottom: 10px; color: #2d3436;">일별 따뜻함 점수 변화</h4>
+                        <iframe seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTSMrpnHDJ-rGjEIiOKQHOAAevSmRGjmOoSm57oRQ8b5TGfdhWWkjbqfrxIpeXVuhi5itbnXfodE9uF/pubchart?oid=1088209065&amp;format=interactive" width="100%" height="300"></iframe>
+                    </div>
+                    
+                    <div style="border: 1px solid #e9ecef; border-radius: 10px; padding: 15px; background: white;">
+                        <h4 style="margin-bottom: 10px; color: #2d3436;">친절 후 기분 변화</h4>
+                        <iframe seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTSMrpnHDJ-rGjEIiOKQHOAAevSmRGjmOoSm57oRQ8b5TGfdhWWkjbqfrxIpeXVuhi5itbnXfodE9uF/pubchart?oid=1674607429&amp;format=interactive" width="100%" height="300"></iframe>
+                    </div>
+                </div>
+                
+                <p style="color: #999; font-size: 12px; text-align: center; margin-top: 15px;">
+                    📈 Google Sheets 자동 차트 • 데이터 업데이트 시 실시간 반영
+                </p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; text-align: center;">
+                <p style="color: #2d3436; margin-bottom: 10px;">
+                    <strong>🌟 우리가 만들어가는 따뜻한 세상</strong>
+                </p>
+                <p style="color: #636e72; font-size: 14px;">
+                    여러분의 작은 친절 하나하나가 모여서<br>
+                    더 따뜻한 사회를 만들어가고 있어요!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // 모든 탭 내용 숨기기
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 모든 탭 버튼 비활성화
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 선택된 탭 내용 보이기
+            document.getElementById(tabName).classList.add('active');
+            
+            // 선택된 탭 버튼 활성화
+            event.target.classList.add('active');
+        }
+        
+        // 폼 제출 후 감사 메시지 (선택사항 - 필요시 주석 해제)
+        // document.querySelector('form').addEventListener('submit', function(e) {
+        //     setTimeout(() => {
+        //         alert('💝 소중한 친절을 기록해주셔서 감사합니다!\n여러분의 따뜻함이 세상을 더 아름답게 만들어요.');
+        //     }, 100);
+        // });
+    </script>
+</body>
+</html>
+                  
